@@ -24,12 +24,12 @@ paths:
         - in: query
           name: lat
           required: false
-          type: integer
+          type: number
           description: Latitude
         - in: query
           name: lng
           required: false
-          type: integer
+          type: number
           description: Longitude
         - in: query
           name: status
@@ -111,7 +111,7 @@ paths:
           in: path
           description: ID do veículo
           required: true
-          type: integer
+          type: string
       responses:
         '200':
           description: Dados processados com sucesso.
@@ -132,7 +132,7 @@ paths:
           in: path
           description: ID do estabelecimento
           required: true
-          type: integer
+          type: string
         - name: body
           in: body
           description: Usuário
@@ -158,7 +158,7 @@ paths:
           in: path
           description: ID do veículo
           required: true
-          type: integer
+          type: string
       responses:
         '200':
           description: Dados processados com sucesso.
@@ -187,7 +187,7 @@ paths:
           description: Falha ao processar dados.
         '401':
           description: Acesso negado.
-    put:
+    post:
       tags:
         - Veículos
       description: Listagem de estabelecimento.
@@ -198,13 +198,13 @@ paths:
           in: path
           description: ID do veículo
           required: true
-          type: integer
+          type: string
         - name: body
           in: body
           description: Veículo
           required: true
           schema:
-            $ref: '#/definitions/vehicle'
+            $ref: '#/definitions/travel'
       responses:
         '200':
           description: Dados processados com sucesso.
@@ -224,12 +224,12 @@ paths:
           in: path
           description: ID do veículo
           required: true
-          type: integer
+          type: string
         - name: travelId
           in: path
           description: ID da viagem
           required: true
-          type: integer
+          type: string
       responses:
         '200':
           description: Dados processados com sucesso.
@@ -250,12 +250,12 @@ paths:
           in: path
           description: ID do veículo
           required: true
-          type: integer
+          type: string
         - name: travelId
           in: path
           description: ID da viagem
           required: true
-          type: integer
+          type: string
         - name: body
           in: body
           description: veículo
@@ -273,9 +273,9 @@ definitions:
   geo:
     properties:
       lat:
-        type: integer
+        type: number
       lng:
-        type: integer
+        type: number
   user:
     properties:
       uuid:
