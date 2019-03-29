@@ -1,0 +1,354 @@
+swagger: '2.0'
+info:
+  title: Fleet Control Platform
+  contact:
+    name: Fleet Control Platform
+    url: 'https://api.fleet-control.com'
+  version: '2.0'
+basePath: /v1/fleet
+schemes:
+  - https
+  - http
+securityDefinitions:
+  basicAuth:
+    type: basic
+paths:
+  '/vehicles':
+    get:
+      tags:
+        - Veículos
+      description: Listgem veículos (obs. Esta api possibilita a listagem dos veículos mais próximos a partir da longitude e latitude)
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: lat
+          required: false
+          type: integer
+          description: Latitude
+        - in: query
+          name: lng
+          required: false
+          type: integer
+          description: Longitude
+        - in: query
+          name: status
+          required: false
+          type: string
+          enum: 
+            - RUNNING_IN_PROGRESS
+            - WAITING_FOR_RACE
+            - INACTIVE
+            - UNDER_MAINTENANCE
+            - RUN_TO_BE_COMPLETED
+            - FINISHING_RACE
+        - in: query
+          name: category
+          required: false
+          type: string
+          enum: 
+            - BASIC
+            - SHARED
+            - EXECUTIVE
+            - SPECIAL
+      responses:
+        '200':
+          description: Dados processados com sucesso.
+          schema:
+            properties:
+              current_page:
+                type: integer
+              from:
+                type: integer
+              next_page_url:
+                type: string
+              path:
+                type: string
+              per_page:
+                type: integer
+              prev_page_url:
+                type: string
+              to:
+                type: integer
+              data:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/definitions/vehicle'
+        '400':
+          description: Falha ao processar dados.
+        '401':
+          description: Acesso negado.
+    post:
+      tags:
+        - Veículos
+      description: Cadastro de veículo.
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: Veículo
+          required: true
+          schema:
+            $ref: '#/definitions/vehicle'
+      responses:
+        '200':
+          description: Dados processados com sucesso.
+        '400':
+          description: Falha ao processar dados.
+        '401':
+          description: Acesso negado.
+  '/vehicles/{vehicleId}':
+    get:
+      tags:
+        - Veículos
+      description: Carregar veículo.
+      produces:
+        - application/json
+      parameters:
+        - name: vehicleId
+          in: path
+          description: ID do veículo
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Dados processados com sucesso.
+          schema:
+            $ref: '#/definitions/vehicle'
+        '400':
+          description: Falha ao processar dados.
+        '401':
+          description: Acesso negado.
+    put:
+      tags:
+        - Veículos
+      description: Listagem de veículos.
+      produces:
+        - application/json
+      parameters:
+        - name: vehicleId
+          in: path
+          description: ID do estabelecimento
+          required: true
+          type: integer
+        - name: body
+          in: body
+          description: Usuário
+          required: true
+          schema:
+            $ref: '#/definitions/vehicle'
+      responses:
+        '200':
+          description: Dados processados com sucesso.
+        '400':
+          description: Falha ao processar dados.
+        '401':
+          description: Acesso negado.
+  '/vehicles/{vehicleId}/travels':
+    get:
+      tags:
+        - Veículos
+      description: Carregar viagens.
+      produces:
+        - application/json
+      parameters:
+        - name: vehicleId
+          in: path
+          description: ID do veículo
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Dados processados com sucesso.
+          schema:
+            properties:
+              current_page:
+                type: integer
+              from:
+                type: integer
+              next_page_url:
+                type: string
+              path:
+                type: string
+              per_page:
+                type: integer
+              prev_page_url:
+                type: string
+              to:
+                type: integer
+              data:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/definitions/travel'
+        '400':
+          description: Falha ao processar dados.
+        '401':
+          description: Acesso negado.
+    put:
+      tags:
+        - Veículos
+      description: Listagem de estabelecimento.
+      produces:
+        - application/json
+      parameters:
+        - name: vehicleId
+          in: path
+          description: ID do veículo
+          required: true
+          type: integer
+        - name: body
+          in: body
+          description: Veículo
+          required: true
+          schema:
+            $ref: '#/definitions/vehicle'
+      responses:
+        '200':
+          description: Dados processados com sucesso.
+        '400':
+          description: Falha ao processar dados.
+        '401':
+          description: Acesso negado.
+  '/vehicles/{vehicleId}/travels/{travelId}':
+    get:
+      tags:
+        - Veículos
+      description: Listagem de viagens.
+      produces:
+        - application/json
+      parameters:
+        - name: vehicleId
+          in: path
+          description: ID do veículo
+          required: true
+          type: integer
+        - name: travelId
+          in: path
+          description: ID da viagem
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Dados processados com sucesso.
+          schema:
+            $ref: '#/definitions/travel'
+        '400':
+          description: Falha ao processar dados.
+        '401':
+          description: Acesso negado.
+    put:
+      tags:
+        - Veículos
+      description: Cadastro de veículos.
+      produces:
+        - application/json
+      parameters:
+        - name: vehicleId
+          in: path
+          description: ID do veículo
+          required: true
+          type: integer
+        - name: travelId
+          in: path
+          description: ID da viagem
+          required: true
+          type: integer
+        - name: body
+          in: body
+          description: veículo
+          required: true
+          schema:
+            $ref: '#/definitions/travel'
+      responses:
+        '200':
+          description: Dados processados com sucesso.
+        '400':
+          description: Falha ao processar dados.
+        '401':
+          description: Acesso negado.
+definitions:
+  geo:
+    properties:
+      lat:
+        type: integer
+      lng:
+        type: integer
+  user:
+    properties:
+      uuid:
+        type: string
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      documentNumber:
+        type: string
+      evaluationAverage:
+        type: integer
+      status:
+        type: string
+        enum:
+          - ACTIVE
+          - INACTIVE
+  vehicle:
+    properties:
+      uuid:
+        type: string
+      plate:
+        type: string
+      driver:
+        type: object
+        $ref: '#/definitions/user'
+      category:
+        type: string
+        enum:
+          - BASIC
+          - SHARED
+          - EXECUTIVE
+          - SPECIAL
+      status:
+        type: string
+        enum:
+          - RUNNING_IN_PROGRESS
+          - WAITING_FOR_RACE
+          - INACTIVE
+          - UNDER_MAINTENANCE
+          - RUN_TO_BE_COMPLETED
+          - FINISHING_RACE
+      currentLocation:
+        type: object
+        $ref: '#/definitions/geo'
+    type: object
+  travel:
+    properties:
+      uuid:
+        type: string
+      driver:
+        type: object
+        $ref: '#/definitions/user'
+      customer:
+        type: object
+        $ref: '#/definitions/user'
+      startingLocation:
+        type: object
+        $ref: '#/definitions/geo'
+      destinationLocation:
+        type: object
+        $ref: '#/definitions/geo'
+      currentLocation:
+        type: object
+        $ref: '#/definitions/geo'
+      status:
+        type: string
+        enum:
+          - IN_PROGRESS
+          - CANCELED
+          - FINISHED
+      evaluation:
+        type: integer
+    type: object
