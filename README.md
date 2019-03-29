@@ -1,7 +1,7 @@
 
 # Apis para controle de frota
 
-[URL Sandbox!](https://app.swaggerhub.com/apis-docs/laselva/mba-trabalho-fleet-control_platform/2.0)
+[URL sandbox swagger](https://app.swaggerhub.com/apis-docs/laselva/mba-trabalho-fleet-control_platform/2.0)
 
 ### Filtragem de veículos
 
